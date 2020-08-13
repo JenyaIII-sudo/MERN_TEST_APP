@@ -1,4 +1,5 @@
 {
-  "port": 3000,
+  "port": 5000,
+  "jwtSecretCode": "JenyaIII",
   "mongoURI": "mongodb+srv://JenyaIII:15935700JENYAIII@mytrainingapp-ur0au.gcp.mongodb.net/mernApp?retryWrites=true&w=majority"
 }
