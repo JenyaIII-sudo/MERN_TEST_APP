@@ -3,6 +3,7 @@ import { Titles } from '../constants/Titles';
 import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 import {AuthContext} from "../context/AuthContext";
+import Loader from "../components/Loader";
 
 const AuthPage = () => {
     const auth = useContext(AuthContext);
@@ -69,22 +70,26 @@ const AuthPage = () => {
                         </div>
                     </div>
                     <div className="card-action">
-                        <button
-                            className="waves-effect btn yellow darken-4"
-                            style={{ margin: "3px" }}
-                            onClick={handleLogin}
-                            disabled={loading}
-                        >
-                            {Titles.logIn}
-                        </button>
-                        <button
-                            className="waves-effect btn grey lighten-1 black-text"
-                            style={{ margin: "3px" }}
-                            onClick={handleRegister}
-                            disabled={loading}
-                        >
-                            {Titles.signUp}
-                        </button>
+                        {loading ? (
+                            <Loader />
+                        ) : (
+                            <>
+                                <button
+                                    className="waves-effect btn yellow darken-4"
+                                    style={{ margin: "3px" }}
+                                    onClick={handleLogin}
+                                >
+                                    {Titles.logIn}
+                                </button>
+                                <button
+                                className="waves-effect btn grey lighten-1 black-text"
+                                style={{ margin: "3px" }}
+                                onClick={handleRegister}
+                                >
+                                {Titles.signUp}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

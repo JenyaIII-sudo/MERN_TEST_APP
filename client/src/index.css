@@ -22,3 +22,18 @@ span.auth-title {
     display: flex!important;
     justify-content: center;
 }
+
+.duckLogo {
+    width: 12%;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.card-action {
+    display: flex;
+    justify-content: center;
+}
+
+#nav-mobile {
+    margin-right: 30px;
+}
