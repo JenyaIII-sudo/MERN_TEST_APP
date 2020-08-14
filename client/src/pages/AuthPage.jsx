@@ -1,16 +1,42 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Titles } from '../constants/Titles';
+import {useHttp} from "../hooks/http.hook";
+import {useMessage} from "../hooks/message.hook";
+import {AuthContext} from "../context/AuthContext";
 
 const AuthPage = () => {
+    const auth = useContext(AuthContext);
+    const message = useMessage();
+    const { loading, clearError, error, request } = useHttp();
     const [form, setForm] = useState({
         email: '',
         password: ''
     })
 
+    useEffect(() => {
+        message(error);
+        clearError();
+    }, [error, message, clearError])
+
     const handleChange = e => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
+    const handleRegister = async () => {
+        try {
+            const data = await request('api/auth/register', 'POST', {...form});
+            if (data.message) {
+                message(data.message);
+            }
+        } catch (e) {}
+    }
+
+    const handleLogin = async () => {
+        try {
+           const data = await request('api/auth/login', 'POST', {...form});
+            auth.login(data.token, data.userId);
+        } catch (e) {}
+    }
 
     return (
         <div className="row">
@@ -22,7 +48,6 @@ const AuthPage = () => {
                         <div>
                             <div className="input-field">
                                 <input
-                                    placeholder="Enter email"
                                     id="email"
                                     type="text"
                                     name="email"
@@ -33,7 +58,6 @@ const AuthPage = () => {
                             </div>
                             <div className="input-field">
                                 <input
-                                    placeholder="Enter password"
                                     id="password"
                                     type="password"
                                     name="password"
@@ -45,10 +69,20 @@ const AuthPage = () => {
                         </div>
                     </div>
                     <div className="card-action">
-                        <button className="waves-effect btn yellow darken-4" style={{ margin: "3px" }}>
+                        <button
+                            className="waves-effect btn yellow darken-4"
+                            style={{ margin: "3px" }}
+                            onClick={handleLogin}
+                            disabled={loading}
+                        >
                             {Titles.logIn}
                         </button>
-                        <button className="waves-effect btn grey lighten-1 black-text" style={{ margin: "3px" }}>
+                        <button
+                            className="waves-effect btn grey lighten-1 black-text"
+                            style={{ margin: "3px" }}
+                            onClick={handleRegister}
+                            disabled={loading}
+                        >
                             {Titles.signUp}
                         </button>
                     </div>

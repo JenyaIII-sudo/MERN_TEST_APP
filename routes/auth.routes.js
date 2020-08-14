@@ -7,7 +7,7 @@ const User = require('../models/users');
 
 const router = Router();
 
-// api/register
+// api/auth/register
 router.post('/register', [
   check('email', 'Email incorrect !').isEmail(),
   check('password', 'Password is incorrect, min 6 symbols').isLength({ min: 6 }),
@@ -39,10 +39,10 @@ router.post('/register', [
     res.status(500).json({ message: 'Something wrong....:D Try again !' });
   }
 });
-// api/login
+// api/auth/login
 router.post('/login',
   [
-    check('email', 'Enter the correct email').normalizeEmail().isEmail(),
+    check('email', 'Enter the correct email').isEmail(),
     check('password', 'Enter the correct password').exists(),
   ], async (req, res) => {
     try {
@@ -56,8 +56,10 @@ router.post('/login',
       }
 
       const { email, password } = req.body;
+      console.log('USER', req.body.email);
 
       const user = await User.findOne({ email });
+      console.log('USER', user);
       if (!user) {
         return res.status(400).json({ message: 'User not found ! KEK ;)' });
       }
